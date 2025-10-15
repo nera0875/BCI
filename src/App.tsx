@@ -37,6 +37,8 @@ import { CommandPalette } from "./components/command-palette";
 import { NotificationsCenter } from "./components/notifications-center";
 import { ErrorBoundary } from "./components/error-boundary";
 import { toast } from "sonner@2.0.3";
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from './lib/apollo-client';
 
 type Section = "overview" | "brain" | "work" | "health" | "system" | "settings";
 
@@ -218,7 +220,8 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <SidebarProvider>
+      <ApolloProvider client={apolloClient}>
+        <SidebarProvider>
         <div className="flex min-h-screen w-full">
         <Sidebar>
           <SidebarHeader className="border-b border-sidebar-border p-4">
@@ -390,7 +393,8 @@ export default function App() {
         <NewTaskSheet open={newTaskOpen} onOpenChange={setNewTaskOpen} />
         <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
         <NotificationsCenter open={notificationsOpen} onOpenChange={setNotificationsOpen} />
-      </SidebarProvider>
+        </SidebarProvider>
+      </ApolloProvider>
     </ErrorBoundary>
   );
 }

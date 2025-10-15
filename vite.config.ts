@@ -1,11 +1,11 @@
 
-  import { defineConfig } from 'vite';
-  import react from '@vitejs/plugin-react-swc';
-  import path from 'path';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
-  export default defineConfig({
-    plugins: [react()],
-    resolve: {
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         'vaul@1.1.2': 'vaul',
@@ -49,9 +49,16 @@
         '@': path.resolve(__dirname, './src'),
       },
     },
+    optimizeDeps: {
+      include: ['@apollo/client'],
+    },
     build: {
       target: 'esnext',
       outDir: 'dist',
+      commonjsOptions: {
+        include: [/@apollo\/client/],
+        transformMixedEsModules: true,
+      },
     },
     server: {
       port: 3000,
