@@ -158,7 +158,7 @@ export function APIDocumentation() {
         </CardHeader>
         <CardContent>
           <code className="text-sm bg-muted px-3 py-2 rounded block">
-            http://84.247.131.60:9598/graphql
+            https://neurodopa.fr/bci/api/graphql
           </code>
         </CardContent>
       </Card>

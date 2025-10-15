@@ -28,7 +28,7 @@ export function SettingsSection() {
   const [breakDuration, setBreakDuration] = useState([5]);
   const [copied, setCopied] = useState(false);
   const [testing, setTesting] = useState(false);
-  const apiEndpoint = "http://84.247.131.60:9598/graphql";
+  const apiEndpoint = "https://neurodopa.fr/bci/api/graphql";
   
   const { refetch: testConnection } = useDatabaseSchema({ skip: true });
 

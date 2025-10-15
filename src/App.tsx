@@ -91,7 +91,7 @@ export default function App() {
     // Check API connectivity
     const checkApi = async () => {
       try {
-        const response = await fetch('http://84.247.131.60:9598/graphql', {
+        const response = await fetch('https://neurodopa.fr/bci/api/graphql', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: '{ health }' }),
