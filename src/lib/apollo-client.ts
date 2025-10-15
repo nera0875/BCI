@@ -25,22 +25,48 @@ const retryLink = new RetryLink({
   },
 });
 
-// Error handling link
+// Error handling link with Sentry
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`
       );
+
+      // Send GraphQL errors to Sentry
+      try {
+        const { captureException } = require('./sentry');
+        captureException(new Error(`GraphQL Error: ${message}`), {
+          operation: operation.operationName,
+          path,
+          locations,
+          query: operation.query.loc?.source.body.substring(0, 200), // First 200 chars
+        });
+      } catch (e) {
+        // Sentry not available
+      }
     });
   }
 
   if (networkError) {
     console.error(`[Network error ${operation.operationName}]: ${networkError.message}`);
+
     // Emit custom event for health check to detect backend offline
     window.dispatchEvent(new CustomEvent('apollo-network-error', {
       detail: { operation: operation.operationName, error: networkError.message }
     }));
+
+    // Send network errors to Sentry
+    try {
+      const { captureException } = require('./sentry');
+      captureException(networkError, {
+        operation: operation.operationName,
+        type: 'network_error',
+        endpoint: GRAPHQL_ENDPOINT,
+      });
+    } catch (e) {
+      // Sentry not available
+    }
   }
 });
 
