@@ -4,7 +4,7 @@ import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
 import { Code, Database, Link as LinkIcon, Trash2, Edit, Plus } from "lucide-react";
 import { Button } from "./ui/button";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 const queries = [
   {

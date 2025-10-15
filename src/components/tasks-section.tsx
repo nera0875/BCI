@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { CheckCircle2, Circle, Clock, Plus, Timer } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function TasksSection() {
   const [filterStatus, setFilterStatus] = useState<string>("all");

@@ -36,8 +36,8 @@ import { KeyboardShortcutsDialog } from "./components/keyboard-shortcuts-dialog"
 import { CommandPalette } from "./components/command-palette";
 import { NotificationsCenter } from "./components/notifications-center";
 import { ErrorBoundary } from "./components/error-boundary";
-import { toast } from "sonner@2.0.3";
-import { ApolloProvider } from '@apollo/client';
+import { toast } from "sonner";
+import { ApolloProvider } from '@apollo/client/react';
 import { apolloClient } from './lib/apollo-client';
 
 type Section = "overview" | "brain" | "work" | "health" | "system" | "settings";

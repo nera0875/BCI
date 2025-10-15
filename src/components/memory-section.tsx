@@ -12,7 +12,7 @@ import { Badge } from "./ui/badge";
 import { Textarea } from "./ui/textarea";
 import { Search, Plus, Database, Network, Activity } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function MemorySection() {
   const [searchQuery, setSearchQuery] = useState("BCI");

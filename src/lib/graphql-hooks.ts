@@ -1,4 +1,5 @@
-import { useQuery as useApolloQuery, useMutation as useApolloMutation, gql } from '@apollo/client';
+import { useQuery as useApolloQuery, useMutation as useApolloMutation } from '@apollo/client/react';
+import { gql } from '@apollo/client/core';
 
 // ============= MOCK DATA =============
 
@@ -192,6 +193,18 @@ const METRICS_QUERY = gql`
       lastError
       lastErrorTime
       uptimeSeconds
+    }
+  }
+`;
+
+const NEO4J_RELATIONS_QUERY = gql`
+  query GetNeo4jRelations($limit: Int) {
+    neo4jRelations(limit: $limit) {
+      sourceId
+      sourceText
+      relationType
+      targetId
+      targetText
     }
   }
 `;
@@ -704,4 +717,78 @@ export const useCreateRelationship = (options?: any) => {
   });
 
   return [mutate, { data, loading, error }];
+};
+
+// Neo4j Relations
+export const useNeo4jRelations = (variables?: { limit?: number }) => {
+  const { data, loading, error, refetch } = useApolloQuery(NEO4J_RELATIONS_QUERY, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+    errorPolicy: 'all',
+  });
+
+  if (error && !data) {
+    return {
+      data: {
+        neo4jRelations: [
+          {
+            sourceId: 'mem_1',
+            sourceText: 'Architecture microservices',
+            relationType: 'USES',
+            targetId: 'tech_1',
+            targetText: 'FastAPI',
+          },
+          {
+            sourceId: 'mem_1',
+            sourceText: 'Architecture microservices',
+            relationType: 'DEPENDS_ON',
+            targetId: 'mem_2',
+            targetText: 'Configuration Docker',
+          },
+        ],
+      },
+      loading: false,
+      error: undefined,
+      refetch,
+    };
+  }
+
+  return { data, loading, error, refetch };
+};
+
+// Dashboard (combined stats + tasks + memories)
+export const useDashboard = (options?: { pollInterval?: number }) => {
+  const { data: memoryStatsData, loading: memoryStatsLoading, error: memoryStatsError, refetch: refetchMemoryStats } = useMemoryStats();
+  const { data: taskStatsData, loading: taskStatsLoading, error: taskStatsError, refetch: refetchTaskStats } = useTaskStats();
+  const { data: tasksData, loading: tasksLoading, error: tasksError, refetch: refetchTasks } = useTasks({ limit: 10 });
+  const { data: memoriesData, loading: memoriesLoading, error: memoriesError, refetch: refetchMemories } = useSearchMemories({ query: 'BCI', limit: 10 });
+
+  const loading = memoryStatsLoading || taskStatsLoading || tasksLoading || memoriesLoading;
+  const error = memoryStatsError || taskStatsError || tasksError || memoriesError;
+
+  return {
+    data: {
+      memoryStats: memoryStatsData?.memoryStats || getMockMemoryStats(),
+      taskStats: taskStatsData?.taskStats || {
+        success: true,
+        totalTasks: 0,
+        pending: 0,
+        inProgress: 0,
+        completed: 0,
+        cancelled: 0,
+        completedToday: 0,
+        totalPomodoros: 0,
+      },
+      tasks: tasksData?.tasks || [],
+      memories: memoriesData?.memories || [],
+    },
+    loading,
+    error,
+    refetch: () => {
+      refetchMemoryStats();
+      refetchTaskStats();
+      refetchTasks();
+      refetchMemories();
+    },
+  };
 };
