@@ -5,6 +5,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Code, Database, Link as LinkIcon, Trash2, Edit, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import { graphqlEndpoint } from '../config/api';
 
 const queries = [
   {
@@ -158,7 +159,7 @@ export function APIDocumentation() {
         </CardHeader>
         <CardContent>
           <code className="text-sm bg-muted px-3 py-2 rounded block">
-            https://neurodopa.fr/bci/api/graphql
+            {graphqlEndpoint}
           </code>
         </CardContent>
       </Card>

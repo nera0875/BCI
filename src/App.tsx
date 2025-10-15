@@ -39,6 +39,7 @@ import { ErrorBoundary } from "./components/error-boundary";
 import { toast } from "sonner";
 import { ApolloProvider } from '@apollo/client/react';
 import { apolloClient } from './lib/apollo-client';
+import { graphqlEndpoint } from './config/api';
 
 type Section = "overview" | "brain" | "work" | "health" | "system" | "settings";
 
@@ -91,7 +92,7 @@ export default function App() {
     // Check API connectivity
     const checkApi = async () => {
       try {
-        const response = await fetch('https://neurodopa.fr/bci/api/graphql', {
+        const response = await fetch(graphqlEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: '{ health }' }),

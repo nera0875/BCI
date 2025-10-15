@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDatabaseSchema } from "../lib/graphql-hooks";
+import { graphqlEndpoint } from '../config/api';
 
 export function SettingsSection() {
   const [pollInterval, setPollInterval] = useState([10]);
@@ -28,8 +29,8 @@ export function SettingsSection() {
   const [breakDuration, setBreakDuration] = useState([5]);
   const [copied, setCopied] = useState(false);
   const [testing, setTesting] = useState(false);
-  const apiEndpoint = "https://neurodopa.fr/bci/api/graphql";
-  
+  const apiEndpoint = graphqlEndpoint;
+
   const { refetch: testConnection } = useDatabaseSchema({ skip: true });
 
   const copyToClipboard = () => {
